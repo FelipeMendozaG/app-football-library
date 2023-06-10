@@ -1,11 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import * as React from 'react';
+import { View, StyleSheet, Button } from 'react-native';
+import { Video, ResizeMode } from 'expo-av';
+import * as ScreenOrientation from 'expo-screen-orientation';
 export default function App() {
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
+  const Orientation=async()=>{
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL);
+  }
+  Orientation();
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Video
+        ref={video}
+        style={styles.video}
+        source={{
+          uri: 'https://videos2.footballia.net/uploads/video/source_file/52363/2022-23_Milan_-_Napoli_-_1.mp4',
+        }}
+        useNativeControls
+        resizeMode={ResizeMode.CONTAIN}
+        isLooping
+        onPlaybackStatusUpdate={status => setStatus(() => status)}
+      />
+      <View style={styles.buttons}>
+        <Button
+          title={status.isPlaying ? 'Pause xd' : 'Play xd'}
+          onPress={() =>
+            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+          }
+        />
+      </View>
     </View>
   );
 }
@@ -13,8 +37,17 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+  },
+  video: {
+    alignSelf: 'center',
+    width: 320,
+    height: 200,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
