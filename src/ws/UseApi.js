@@ -1,16 +1,17 @@
 import axios from 'axios';
 
-const UseApi = async (url) => {
+const UseApi = async (url,method='get') => {
   try {
     let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
+        method: method,
         url: url,
-        headers: { }
+        headers: {
+          'Content-Type':'application/json'
+        }
     };
-    const data = await axios.request(config);
-    console.log(data.status);
-    return [];
+    const response = await axios.request(config);
+    const data = await response.data
+    return data;
   } catch (error) {
     console.error(error);
     throw new Error('Error fetching data from API');

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-const FootballScoredCard = ({ homeTeam, awayTeam})=>{
+const FootballScoredCard = ({ homeTeam, awayTeam, navigation})=>{
     return (
         <View style={styles.container}>
             <View style={styles.teamContainer}>
@@ -9,7 +9,9 @@ const FootballScoredCard = ({ homeTeam, awayTeam})=>{
                 {/* <Text style={styles.score}>{homeScore}</Text> */}
             </View>
             <View>
+              <TouchableHighlight onPress={()=>navigation()}>
                 <Icon name="soccer-ball-o" size={24} color="#000" style={styles.icon} />
+              </TouchableHighlight>
             </View>
             <View style={styles.teamContainer}>
                 <Text style={styles.teamName}>{awayTeam}</Text>
@@ -21,6 +23,8 @@ const FootballScoredCard = ({ homeTeam, awayTeam})=>{
 
 const styles = StyleSheet.create({
     container: {
+      marginBottom:10,
+      marginTop:20,
       flexDirection: 'row',
       justifyContent: 'space-between',
       backgroundColor: '#fff',
