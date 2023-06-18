@@ -1,0 +1,19 @@
+{
+    "path_url":{
+        "base":"https://api-footballia-production.up.railway.app/api/"
+    },
+    "entity":{
+        "matches":{
+            "url":"matches",
+            "method":"get"
+        },
+        "match_detail":{
+            "url":"",
+            "method":""
+        },
+        "get_matches_and_detail":{
+            "url":"match-details/match/:param",
+            "method":"get"
+        }
+    }
+}

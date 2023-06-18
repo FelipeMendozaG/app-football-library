@@ -11,7 +11,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home" options={{headerTitle: 'Página de inicio'}} component={HomeScreen} />
         <Stack.Screen name="Match" component={MatchScreen} />
       </Stack.Navigator>
     </NavigationContainer>

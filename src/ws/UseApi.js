@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const UseApi = async (url,method='get') => {
+const UseApi = async (url,method='get',parameters={}) => {
   try {
     let config = {
         method: method,
@@ -9,8 +9,11 @@ const UseApi = async (url,method='get') => {
           'Content-Type':'application/json'
         }
     };
+    if(method == 'get' && parameters != {}){
+      config = {...config,params:parameters};
+    }
     const response = await axios.request(config);
-    const data = await response.data
+    const data = await response.data;
     return data;
   } catch (error) {
     console.error(error);
