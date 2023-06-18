@@ -9,7 +9,7 @@ const UseApi = async (url,method='get',parameters={}) => {
           'Content-Type':'application/json'
         }
     };
-    if(method == 'get' && parameters != {}){
+    if(method === 'get' && parameters !== {}){
       config = {...config,params:parameters};
     }
     const response = await axios.request(config);

@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screen/HomeScreen';
 import MatchScreen from './src/screen/MatchScreen';
 
+import 'react-native-gesture-handler';
+
 const Stack = createStackNavigator();
 
 export default function App() {

@@ -5,27 +5,33 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import { useRoute } from '@react-navigation/native';
 import {path_url,entity} from '../ws/Services.json';
 import UseApi from '../ws/UseApi';
+import LoaderApi from '../components/LoaderApi';
 const MatchScreen = ({navigation})=>{
     const route = useRoute();
     const video = useRef(null);
     const [data, setData] = useState({});
     const [status, setStatus] = useState({});
+    const [statusfetch,setStatusFetch] = useState(false);
     const { matchId } = route.params;
     const Orientation=async()=>{
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL);
     }
     
     const GetMatchDetail=async()=>{
+        setStatusFetch(false);
         const url = `${path_url.base}${entity.get_matches_and_detail.url.replace(':param',matchId)}`;
         const response = await UseApi(url);
         setData(response);
+        setStatusFetch(true);
     }
 
     useEffect(()=>{
         GetMatchDetail();
     },[]);
 
-
+    if(statusfetch === false){
+        return <LoaderApi/>
+    }
 
     Orientation();
     return (
@@ -39,16 +45,7 @@ const MatchScreen = ({navigation})=>{
                 </View>
             </SafeAreaView>
             {
-                data.match_details.map( (item,index)=> <Video key={index} ref={video} style={styles.video}
-                        source={{
-                            uri: `${item.url_video}`,
-                        }}
-                        useNativeControls
-                        resizeMode={ResizeMode.CONTAIN}
-                        isLooping
-                        onPlaybackStatusUpdate={status => setStatus(() => status)}
-                    />
-                )
+                data.match_details.map( (item,index)=> <Video key={index} ref={video} style={styles.video} source={{uri: `${item.url_video}`}} useNativeControls resizeMode={ResizeMode.CONTAIN} isLooping onPlaybackStatusUpdate={status => setStatus(() => status)}/>)
             }
         </View>
     );

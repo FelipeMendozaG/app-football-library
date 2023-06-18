@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, Button } from "react-native";
+import { View, StyleSheet, ScrollView, Button,Text } from "react-native";
 import FootballScoredCard from "../components/FootballScoredCard";
 import UseApi from "../ws/UseApi";
 import { useState,useEffect } from "react";
@@ -28,7 +28,7 @@ const HomeScreen = ({navigation})=>{
     navigation.navigate('Match',{matchId:id});
   }
 
-  if(loader == false){
+  if(loader === false){
     return <LoaderApi/>
   }
 
