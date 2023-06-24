@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, Button,TextInput, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView, Button, TextInput, TouchableOpacity, SafeAreaView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FootballScoredCard from "../components/FootballScoredCard";
 import UseApi from "../ws/UseApi";
@@ -6,27 +6,36 @@ import { useState,useEffect } from "react";
 import LoaderApi from "../components/LoaderApi";
 import {path_url,entity} from '../ws/Services.json';
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
 const HomeScreen = ({navigation})=>{
-  const [text, onChangeText] = useState('');
+
   const [data,setData] = useState([]);
   const [loader,SetLoader] = useState(false);
+  const [search,setSearch] = useState(false);
   const [pages,setPages] = useState(1);
+  const [textSearch,setTextSearch] = useState('');
+  
   navigation = useNavigation();
+  
+  const fetchData = async () => {
+    try {
+      const apiUrl = `${path_url.base}${entity.matches.url}`;
+      let bodyparam = {page:pages,limit:10};
+      if(textSearch !== ''){
+        bodyparam = {...bodyparam,title_match:textSearch};
+      }
+      const response = await UseApi(apiUrl,entity.matches.method,bodyparam);
+      setData(response.results);
+      SetLoader(true);
+    }catch (error) {
+      console.error(error);
+    }
+  };
+  
   useEffect(() => {
     SetLoader(false);
-    const fetchData = async () => {
-      try {
-        const apiUrl = `${path_url.base}${entity.matches.url}`;
-        const response = await UseApi(apiUrl,entity.matches.method,{page:pages,limit:10});
-        setData(response.results);
-        SetLoader(true);
-      }catch (error) {
-        console.error(error);
-      }
-    };
     fetchData();
   }, [pages]);
+  
   const navigationStack=(id)=>{
     navigation.navigate('Match',{matchId:id});
   }
@@ -36,20 +45,20 @@ const HomeScreen = ({navigation})=>{
   }
 
   return (
-    <SafeAreaView style={{paddingTop:0}}>
+    <SafeAreaView style={{flexDirection:'column'}}>
       <View style={styles.content_search}>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
+          onChangeText={setTextSearch}
+          value={textSearch}
         />
         <View>
-          <TouchableOpacity onPress={()=>{}}>
+          <TouchableOpacity onPress={async()=>{await fetchData()}}>
             <Icon name="search" size={27} color="#000" style={styles.icon} />
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView style={styles.content_scroll}>
         <View style={styles.container}>
           {
             data.map((item)=><FootballScoredCard key={item._id} competition={item.competition} homeTeam={item.team_local} awayTeam={item.team_visit} season={item.season} navigation={()=>{navigationStack(item._id)}} />)
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#f5f5f5',
+      backgroundColor: '#f5f5f5'
     },
     paginationButtonContainer: {
       alignItems: 'center',
@@ -98,6 +107,9 @@ const styles = StyleSheet.create({
     icon: {
       marginBottom: 5,
       marginTop:15
+    },
+    content_scroll:{
+      height:580
     }
 });
 
