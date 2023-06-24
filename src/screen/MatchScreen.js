@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, SafeAreaView, Text } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Text, ScrollView } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useRoute } from '@react-navigation/native';
@@ -35,19 +35,21 @@ const MatchScreen = ({navigation})=>{
 
     Orientation();
     return (
-        <View>
-            <SafeAreaView style={styles.header_page}>
-                <Text style={styles.title_header}>{data.matches.title_match}</Text>
-                <View style={styles.information_media}>
-                    <View>
-                        <Text style={styles.text_information}>Fase: {data.matches.stage}</Text> 
+        <ScrollView>
+            <View>
+                <SafeAreaView style={styles.header_page}>
+                    <Text style={styles.title_header}>{data.matches.title_match}</Text>
+                    <View style={styles.information_media}>
+                        <View>
+                            <Text style={styles.text_information}>Fase: {data.matches.stage}</Text> 
+                        </View>
                     </View>
-                </View>
-            </SafeAreaView>
-            {
-                data.match_details.map( (item,index)=> <Video key={index} ref={video} style={styles.video} source={{uri: `${item.url_video}`}} useNativeControls resizeMode={ResizeMode.CONTAIN} isLooping onPlaybackStatusUpdate={status => setStatus(() => status)}/>)
-            }
-        </View>
+                </SafeAreaView>
+                {
+                    data.match_details.map( (item,index)=> <Video key={index} ref={video} style={styles.video} source={{uri: `${item.url_video}`}} useNativeControls resizeMode={ResizeMode.CONTAIN} isLooping onPlaybackStatusUpdate={status => setStatus(() => status)}/>)
+                }
+            </View>
+        </ScrollView>
     );
 }
 const styles = StyleSheet.create({
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
     },
     video: {
       alignSelf: 'center',
-      width:400,
+      width:350,
       height: 200,
     },
     buttons: {

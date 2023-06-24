@@ -1,30 +1,23 @@
-import { StyleSheet,Text,View } from 'react-native';
-/* import AnimatedLoader from "react-native-animated-loader"; */
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 const LoaderApi = ()=>{
     return (
-      <View styles={styles.lottie}>
-        <Text styles={styles.text_loader}>Cargando informacion</Text>
-        {/* <AnimatedLoader
-            visible={true}
-            overlayColor="rgba(255,255,255,0.75)"
-            animationStyle={styles.lottie}
-            speed={1}>
-      </AnimatedLoader> */}
+      <View style={[styles.container, styles.horizontal]}>
+        <ActivityIndicator size="large"/>
       </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-  lottie: {
-    width: 100,
-    height: 100
+  container: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  text_loader:{
-    alignContent:'center',
-    fontSize:40,
-    fontWeight:'bold',
-    textAlign:'center'
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 5,
   }
 });
+
 export default LoaderApi;
