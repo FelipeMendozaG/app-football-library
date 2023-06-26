@@ -5,7 +5,8 @@ import UseApi from "../ws/UseApi";
 import { useState,useEffect } from "react";
 import LoaderApi from "../components/LoaderApi";
 import {path_url,entity} from '../ws/Services.json';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 const HomeScreen = ({navigation})=>{
 
   const [data,setData] = useState([]);
@@ -14,6 +15,10 @@ const HomeScreen = ({navigation})=>{
   const [pages,setPages] = useState(1);
   const [textSearch,setTextSearch] = useState('');
   
+  const route = useRoute();
+
+  const { season_param } = route.params;
+
   navigation = useNavigation();
   
   const fetchData = async () => {
@@ -22,6 +27,9 @@ const HomeScreen = ({navigation})=>{
       let bodyparam = {page:pages,limit:10};
       if(textSearch !== ''){
         bodyparam = {...bodyparam,title_match:textSearch};
+      }
+      if(season_param !== undefined || season_param !== '' || season_param !== null){
+        bodyparam = {...bodyparam, season:season_param};
       }
       const response = await UseApi(apiUrl,entity.matches.method,bodyparam);
       setData(response.results);
@@ -61,7 +69,7 @@ const HomeScreen = ({navigation})=>{
       <ScrollView style={styles.content_scroll}>
         <View style={styles.container}>
           {
-            data.map((item)=><FootballScoredCard key={item._id} competition={item.competition} homeTeam={item.team_local} awayTeam={item.team_visit} season={item.season} navigation={()=>{navigationStack(item._id)}} />)
+            data.map((item)=><FootballScoredCard key={item._id} competition={item.competition} stage={item.stage} homeTeam={item.team_local} awayTeam={item.team_visit} season={item.season} navigation={()=>{navigationStack(item._id)}} />)
           }
         </View>
       </ScrollView>

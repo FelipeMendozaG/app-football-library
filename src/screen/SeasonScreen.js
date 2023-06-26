@@ -5,6 +5,7 @@ import UseApi from "../ws/UseApi";
 import LoaderApi from "../components/LoaderApi";
 import { StyleSheet } from "react-native";
 import CardSeason from "../components/CardSeason";
+
 const SeasonScreen = ({})=>{
     const [statusApi,SetStatusApi] = useState(false);
     const [data,setData] = useState([]);
@@ -34,9 +35,8 @@ const SeasonScreen = ({})=>{
             <FlatList 
                 data={data}
                 numColumns={2}
-                renderItem={(item)=><CardSeason name={item.name} /> }
+                renderItem={({item})=><CardSeason name={item.name} /> }
                 keyExtractor={(item) => item._id}
-                extraData={{name:'hola mundo'}}
                 contentContainerStyle={styles.container}
             />
         </SafeAreaView>
@@ -46,6 +46,9 @@ const SeasonScreen = ({})=>{
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 10,
+        paddingLeft:5,
+        paddingTop:10,
+        paddingBottom:10
     }
 });
 

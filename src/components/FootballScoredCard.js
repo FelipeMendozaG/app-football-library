@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-const FootballScoredCard = ({ homeTeam, awayTeam, navigation, competition, season})=>{
+const FootballScoredCard = ({ homeTeam, awayTeam, navigation, competition, season, stage})=>{
     return (
         <View style={styles.container}>
           <View style={styles.card_content}>
             <View style={styles.card_header}>
               <Text style={styles.text_header}>{competition}</Text>
+              <Text style={styles.text_header}>{stage}</Text>
             </View>
             <View style={styles.card_body}>
               <View style={styles.teamContainer}>

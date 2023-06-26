@@ -1,10 +1,17 @@
-import { StyleSheet, View, Text, Dimensions } from "react-native";
-
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 const CardSeason = ({name})=>{
+    const navigation = useNavigation();
+    const SelectSeason=(season)=>{
+        navigation.navigate('Home',{season_param:season});
+    }
+
     return (
-        <View style={styles.card}>
-            <Text style={styles.title_header}>{name}</Text>
-        </View>
+        <TouchableOpacity onPress={()=>SelectSeason(name)}>
+            <View style={styles.card}>
+                <Text style={styles.title_header}>{name}</Text>
+            </View>
+        </TouchableOpacity>
     );
 }
 const styles = StyleSheet.create({
